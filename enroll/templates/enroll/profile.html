@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User profile</title>
+    <!-- Bootstrap CSS link (make sure to include it) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <div class="jumbotron">
+            <div style="background-color: #3498db; padding: 20px; color: #fff; border-radius: 10px;">
+                <h2 class="display-4 text-sm mt-2" style="font-size: 2.5rem;font-weight: bold;">User Profile</h2>
+                <h5 style="color: #ecf0f1;">Welcome {{name}}</h5>
+                {% if users != None %}
+                    <h5 style="color: #ecf0f1;">List of users</h5>
+                    {% for user in users %}
+                        <a href="{% url 'userdetail' user.id %}" style="color: #ffffff;">{{user.username}}</a><br>
+                    {% endfor %}
+                {% endif %}
+            </div><br>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {% if message.tags %} alert-{{message.tags}}" {% endif %} role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form action="" method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                        <p>{{error}}</p>
+                    {% endfor %}
+                {% endif %}
+                {% for fm in form %}
+                    {{ fm.label_tag }} {{ fm }} {{ fm.errors|striptags }}<br><br>
+                {% endfor %}
+                <input type="submit" value="Save" class="btn btn-primary">
+            </form><br>
+            <a class="btn btn-primary" href="{% url 'changepassword' %}">Change Password</a>
+            <a class="btn btn-primary" href="{% url 'changepassword2' %}">Change Password2</a>
+            <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
